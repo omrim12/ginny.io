@@ -1,6 +1,6 @@
 import logging
 import numpy as np
-from img_utils import convert_image
+from utils.img_utils import convert_image
 from concurrent.futures import ThreadPoolExecutor
 from constants import (
     IMAGE_SIZE,
@@ -38,6 +38,7 @@ def load_dataset(ds_type: str):
     # get images paths list
     image_paths_raw = dataset_file.read()
     images_paths_list = image_paths_raw.split('\n')
+    subset_size = 5000
 
     for image_path in images_paths_list:
         # extract image food type and id from image_path
@@ -53,7 +54,12 @@ def load_dataset(ds_type: str):
         tags = np.concatenate((tags, img_tag), axis=0)
 
         # sampling dataset size
-        if dataset.shape[0] % DATASET_BATCH == 0:
-            LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
+        if ds_type == 'train' and dataset.shape[0] == 4500:
+            break
+        if ds_type == 'test' and dataset.shape[0] == 1500:
+            break
+        # if dataset.shape[0] % subset_size == 0:
+        #     break
+        #     LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
     dataset_file.close()
     return dataset, tags

@@ -8,14 +8,6 @@ from constants import (
 )
 
 
-def convert_genie(genie_model):
-    converter = tf.lite.TFLiteConverter.from_keras_model(genie_model)
-    model = converter.convert()
-    tflite_model_fname = 'genie.tflite'
-    with open(tflite_model_fname, 'wb') as model_file:
-        model_file.write(model)
-
-
 def save_genie(genie_model, loss, acc):
     save_model(
         genie_model,

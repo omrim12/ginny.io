@@ -1,7 +1,7 @@
 import logging
 import numpy as np
 from PIL import Image
-from tag_utils import get_classes_list
+from utils.tag_utils import get_classes_list
 from constants import (
     IMAGES_DIR,
     IMAGE_SIZE
@@ -11,12 +11,12 @@ LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def analyze_food_img(food_img_path: str):
+def analyze_food_img(food_img, as_path=True):
     try:
         # convert image to CNN input
-        food_img = Image.open(food_img_path)
+        if as_path:
+            food_img = Image.open(food_img)
         food_img = food_img.resize((IMAGE_SIZE, IMAGE_SIZE))
-        # TODO: prepare image for classifying ?
 
         # scale pixel intensities in range 0-1
         # and average RGB arrays
@@ -35,8 +35,6 @@ def convert_image(image_id, image_tag):
 
     # resize image to IMAGE_SIZE
     food_img = food_img.resize((IMAGE_SIZE, IMAGE_SIZE))
-
-    # TODO: clean image from noises (e.g. masking) ?
 
     # scale pixel intensities in range 0-1
     # and average RGB arrays
