@@ -10,13 +10,11 @@ GENIE_SCORE_FNAME = 'genie_res.json'
 GENIE_FOOD_IMG = 'food_img.jpg'
 
 # CNN variables
-DATASET_BATCH = 128
+DATASET_BATCH = 1000
 EPOCH = 50
 CONV_TYPE = 'valid'
-DROPOUT_PROB = 0.3
 KERNEL_SIZE = 3
 FILTERS = 64
-ALPHA = 0.001
 
 # Edamam API variables
 TABLE_COLUMN_WIDTH = 10

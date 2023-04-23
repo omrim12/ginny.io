@@ -8,6 +8,7 @@ from flask_restful import Api
 from utils.cnn_utils import cnn_train
 from utils.file_utils import save_genie, load_genie
 from utils.rest_api_utils import GenieModelResource
+from utils.tag_utils import get_classes_list
 from constants import (
     GENIE_NET_FNAME,
 )
@@ -19,12 +20,19 @@ app = Flask(__name__)
 api = Api(app)
 
 
+def extract_num_types(args):
+    for arg in args:
+        if arg.startswith('--num-types'):
+            return int(arg.split('=')[1])
+    return None
+
+
 def main(args):
     # Initialize CNN model if trained exists
     if os.path.exists(GENIE_NET_FNAME):
         if '--new-genie' in args:
             # Train a new CNN model
-            genie_model, loss, acc = cnn_train()
+            genie_model, loss, acc = cnn_train(extract_num_types(args))
 
             # Delete previous CNN model
             os.remove(GENIE_NET_FNAME)
@@ -39,7 +47,7 @@ def main(args):
             genie_model = load_genie()
     else:
         # Train a new CNN model
-        genie_model, loss, acc = cnn_train()
+        genie_model, loss, acc = cnn_train(extract_num_types(args))
 
         # Save trained CNN model
         save_genie(

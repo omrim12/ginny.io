@@ -1,6 +1,7 @@
 import logging
 import numpy as np
 from utils.img_utils import convert_image
+from utils.tag_utils import get_classes_list
 from concurrent.futures import ThreadPoolExecutor
 from constants import (
     IMAGE_SIZE,
@@ -12,14 +13,14 @@ LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def load_food_101():
+def load_food_101(num_types=101):
     LOGGER.info("Loading Food 101 dataset")
     # init datasets by types
     # running datasets init processes in separate
     # threads to reduce runtime
     executor = ThreadPoolExecutor()
-    res1 = executor.submit(load_dataset, 'train')
-    res2 = executor.submit(load_dataset, 'test')
+    res1 = executor.submit(load_dataset, 'train', num_types)
+    res2 = executor.submit(load_dataset, 'test', num_types)
     X_train_valid, y_train_valid = res1.result()
     X_test, y_test = res2.result()
 
@@ -32,7 +33,7 @@ def load_food_101():
     return X_train, X_valid, X_test, y_train, y_valid, y_test
 
 
-def load_dataset(ds_type: str):
+def load_dataset(ds_type: str, num_types=101):
     # init empty dataset
     dataset = np.empty([0, IMAGE_SIZE, IMAGE_SIZE], dtype=float)
     tags = np.empty([0, 1], dtype=int)
@@ -52,6 +53,9 @@ def load_dataset(ds_type: str):
             continue  # last line
         food_type, image_id = image_path.split('/')[0], image_path.split('/')[1]
 
+        # limit number of food types to be initialized
+        if get_classes_list().index(food_type) == num_types:
+            break
         # get image vector and tag based on given image and food type
         img_vect, img_tag = convert_image(image_id=image_id, image_tag=food_type)
 
@@ -60,10 +64,8 @@ def load_dataset(ds_type: str):
         tags = np.concatenate((tags, img_tag), axis=0)
 
         # sampling dataset size
-        if dataset.shape[0] == 4500 and ds_type == 'train':
-            break
-            # LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
-        if dataset.shape[0] == 1500 and ds_type == 'test':
-            break
+        if dataset.shape[0] % DATASET_BATCH == 0:
+            LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
+
     dataset_file.close()
     return dataset, tags

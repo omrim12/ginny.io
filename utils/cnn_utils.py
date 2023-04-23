@@ -51,7 +51,7 @@ def train_by_type(
         activation=layer_act, padding=conv_type)(X)
     X = layers.MaxPooling2D(pool_size=2)(X)
     X = layers.Conv2D(
-        filters=FILTERS * 4,
+        filters=FILTERS * 2,
         kernel_size=(KERNEL_SIZE, KERNEL_SIZE),
         activation=layer_act, padding=conv_type)(X)
 
@@ -62,8 +62,7 @@ def train_by_type(
     # Adding a Dense layer while applying regularization to prevent
     # over-fitting
     X = layers.Dense(units=IMAGE_SIZE ** 2,
-                     activation=layer_act,
-                     kernel_regularizer=keras.regularizers.L1())(X)
+                     activation=layer_act)(X)
 
     # Calculating outputs from NN dense layer
     outputs = layers.Dense(
@@ -91,11 +90,14 @@ def train_by_type(
     return model, test_loss, test_acc
 
 
-def cnn_train():
+def cnn_train(num_types=None):
     cprint('\nAbout to train a new genie!', "blue")
 
     # load train + valid + test datasets
-    X_train, X_valid, X_test, y_train, y_valid, y_test = load_food_101()
+    if num_types:
+        X_train, X_valid, X_test, y_train, y_valid, y_test = load_food_101(num_types=num_types)
+    else:
+        X_train, X_valid, X_test, y_train, y_valid, y_test = load_food_101()
 
     # Training CNN using the food 101 dataset
     LOGGER.info(f"--- Running CNN '{CONV_TYPE}' learning session ---")
