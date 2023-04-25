@@ -7,7 +7,6 @@ from utils.data_utils import load_food_101
 from utils.tag_utils import get_labels_list
 from constants import (
     IMAGE_SIZE,
-    FOOD_TYPES,
     CONV_TYPE,
     EPOCH,
     KERNEL_SIZE,
@@ -34,7 +33,8 @@ def train_by_type(
         epoch=20,
         batch_size=128,
         layer_act='relu',
-        output_act='softmax'
+        output_act='softmax',
+        num_types=101
 ):
     # Init CNN inputs tensor
     inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1))
@@ -59,14 +59,13 @@ def train_by_type(
     # to NN output dense layer (knows only to receive a vector)
     X = layers.Flatten()(X)
 
-    # Adding a Dense layer while applying regularization to prevent
-    # over-fitting
+    # Adding a Dense layer
     X = layers.Dense(units=IMAGE_SIZE ** 2,
                      activation=layer_act)(X)
 
     # Calculating outputs from NN dense layer
     outputs = layers.Dense(
-        FOOD_TYPES,
+        num_types,
         activation=output_act)(X)
 
     # Initialize model from feature maps results
@@ -95,9 +94,13 @@ def cnn_train(num_types=None):
 
     # load train + valid + test datasets
     if num_types:
-        X_train, X_valid, X_test, y_train, y_valid, y_test = load_food_101(num_types=num_types)
+        X_train, X_valid, X_test, \
+            y_train, y_valid, y_test, \
+            food_types = load_food_101(num_types=num_types)
     else:
-        X_train, X_valid, X_test, y_train, y_valid, y_test = load_food_101()
+        X_train, X_valid, X_test,\
+            y_train, y_valid, y_test, \
+            food_types = load_food_101()
 
     # Training CNN using the food 101 dataset
     LOGGER.info(f"--- Running CNN '{CONV_TYPE}' learning session ---")
@@ -106,4 +109,4 @@ def cnn_train(num_types=None):
                                                  X_test, y_test,
                                                  conv_type=CONV_TYPE,
                                                  epoch=EPOCH)
-    return model, model_loss, model_acc
+    return model, model_loss, model_acc, food_types

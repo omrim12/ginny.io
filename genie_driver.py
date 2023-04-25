@@ -8,7 +8,6 @@ from flask_restful import Api
 from utils.cnn_utils import cnn_train
 from utils.file_utils import save_genie, load_genie
 from utils.rest_api_utils import GenieModelResource
-from utils.tag_utils import get_classes_list
 from constants import (
     GENIE_NET_FNAME,
 )
@@ -32,8 +31,9 @@ def main(args):
     if os.path.exists(GENIE_NET_FNAME):
         if '--new-genie' in args:
             # Train a new CNN model
-            genie_model, loss, acc = cnn_train(extract_num_types(args))
-
+            genie_model, loss, acc, food_types = cnn_train(
+                num_types=extract_num_types(args)
+            )
             # Delete previous CNN model
             os.remove(GENIE_NET_FNAME)
 
@@ -41,19 +41,23 @@ def main(args):
             save_genie(
                 genie_model=genie_model,
                 loss=loss,
-                acc=acc
+                acc=acc,
+                food_types=food_types
             )
         else:
             genie_model = load_genie()
     else:
         # Train a new CNN model
-        genie_model, loss, acc = cnn_train(extract_num_types(args))
+        genie_model, loss, acc, food_types = cnn_train(
+            num_types=extract_num_types(args)
+        )
 
         # Save trained CNN model
         save_genie(
             genie_model=genie_model,
             loss=loss,
-            acc=acc
+            acc=acc,
+            food_types=food_types
         )
 
     # Run a CLI session based on the trained model
@@ -66,7 +70,7 @@ def main(args):
 
     elif '--api-mode' in args:
         api.add_resource(GenieModelResource, '/classify')
-        app.run(debug=True)
+        app.run(debug=True, host='0.0.0.0', port=5000)
 
 
 if __name__ == '__main__':

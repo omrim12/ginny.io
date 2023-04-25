@@ -21,8 +21,8 @@ def load_food_101(num_types=101):
     executor = ThreadPoolExecutor()
     res1 = executor.submit(load_dataset, 'train', num_types)
     res2 = executor.submit(load_dataset, 'test', num_types)
-    X_train_valid, y_train_valid = res1.result()
-    X_test, y_test = res2.result()
+    X_train_valid, y_train_valid, food_types = res1.result()
+    X_test, y_test, food_types = res2.result()
 
     # split train and validation datasets
     train_valid_segment = int(np.floor(X_train_valid.shape[0] * 0.8))
@@ -30,7 +30,7 @@ def load_food_101(num_types=101):
     X_valid = X_train_valid[train_valid_segment:]
     y_train = y_train_valid[:train_valid_segment]
     y_valid = y_train_valid[train_valid_segment:]
-    return X_train, X_valid, X_test, y_train, y_valid, y_test
+    return X_train, X_valid, X_test, y_train, y_valid, y_test, food_types
 
 
 def load_dataset(ds_type: str, num_types=101):
@@ -41,11 +41,11 @@ def load_dataset(ds_type: str, num_types=101):
     # iterate through all image paths dedicated for
     # dataset type (train/test) and load their image to dataset
     dataset_file = open(f'{IMAGES_META}/{ds_type}.txt')
+    food_type = None
 
     # get images paths list
     image_paths_raw = dataset_file.read()
     images_paths_list = image_paths_raw.split('\n')
-    subset_size = 5000
 
     for image_path in images_paths_list:
         # extract image food type and id from image_path
@@ -68,4 +68,6 @@ def load_dataset(ds_type: str, num_types=101):
             LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
 
     dataset_file.close()
-    return dataset, tags
+    supported_food_types = get_classes_list()[:get_classes_list().index(food_type)]
+
+    return dataset, tags, supported_food_types

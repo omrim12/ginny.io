@@ -16,7 +16,7 @@ images
 
 # genie model
 genie_net.h5
-genie_res.json
+genie_metadata.json
 
 # client input images
 *.jpg

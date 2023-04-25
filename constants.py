@@ -2,7 +2,6 @@
 IMAGES_DIR = 'images/food-101/food-101/images'
 IMAGES_META = 'images/food-101/food-101/meta'
 IMAGE_SIZE = 56
-FOOD_TYPES = 101
 
 # genie classifier model files
 GENIE_NET_FNAME = 'genie_net.h5'
@@ -11,7 +10,7 @@ GENIE_FOOD_IMG = 'food_img.jpg'
 
 # CNN variables
 DATASET_BATCH = 1000
-EPOCH = 50
+EPOCH = 30
 CONV_TYPE = 'valid'
 KERNEL_SIZE = 3
 FILTERS = 64

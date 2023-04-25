@@ -8,7 +8,7 @@ from constants import (
 )
 
 
-def save_genie(genie_model, loss, acc):
+def save_genie(genie_model, loss, acc, food_types):
     save_model(
         genie_model,
         GENIE_NET_FNAME,
@@ -21,12 +21,13 @@ def save_genie(genie_model, loss, acc):
     )
 
     # save model loss, accuracy
-    with open(GENIE_SCORE_FNAME, 'w') as score_file:
-        net_score = {
+    with open(GENIE_SCORE_FNAME, 'w') as net_meta_file:
+        net_metadata = {
             'accuracy': acc,
-            'loss': loss
+            'loss': loss,
+            'supported_food_types': food_types
         }
-        json.dump(net_score, score_file)
+        json.dump(net_metadata, net_meta_file)
 
 
 def load_genie():

@@ -1,5 +1,4 @@
 import os
-from flask import jsonify
 from flask_restful import Resource, request
 from utils.cnn_utils import classify_client_input
 from utils.img_utils import analyze_food_img
