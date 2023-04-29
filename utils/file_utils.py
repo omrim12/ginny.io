@@ -1,6 +1,5 @@
-import os
 import json
-import tensorflow as tf
+from datetime import date
 from keras.models import save_model, load_model
 from constants import (
     GENIE_NET_FNAME,
@@ -25,7 +24,8 @@ def save_genie(genie_model, loss, acc, food_types):
         net_metadata = {
             'accuracy': acc,
             'loss': loss,
-            'supported_food_types': food_types
+            'supported_food_types': food_types,
+            'date': date.today()
         }
         json.dump(net_metadata, net_meta_file)
 

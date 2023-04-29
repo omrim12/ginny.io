@@ -22,4 +22,4 @@ RUN python -m venv venv &&\
     pip3 install --upgrade pip &&\
     pip3 install -r requirements.txt
 
-ENTRYPOINT ["/bin/bash", "-c", "source venv/bin/activate && python genie_driver.py --api-mode"]
+ENTRYPOINT ["/bin/bash", "-c", "source venv/bin/activate && python genie_driver.py --new-genie --num-types=20 --api-mode"]
