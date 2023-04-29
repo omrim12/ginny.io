@@ -20,7 +20,7 @@ python genie_driver.py --cli-mode
 ```bash
 python genie_driver.py --api-mode
 ```
-- train a new genie CNN model:
+- train a new genie CNN model with specific number of food types:
 ```bash
 python genie_driver.py --new-genie --num-types=<number of supported food types>
 ```
