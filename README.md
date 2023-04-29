@@ -29,7 +29,7 @@ python genie_driver.py --api-mode
 python genie_driver.py --new-genie --num-types=<number of supported food types>
 ```
 
-## genie.io - Container Image
+## Container Image
 ### Build and run application docker image
 - Create `secrets.env` file with Kaggle and Edamam API credentials
 - Build a new image tag locally:
