@@ -21,6 +21,9 @@ os.chmod(kaggle_creds_path, 600)
 
 # download food-101 using kaggle cli
 print("Downloading Food 101 datasets...")
-p2 = subprocess.run(shlex.split(s="kaggle datasets download -d dansbecker/food-101"))
-p3 = subprocess.run(shlex.split(s="unzip food-101.zip"))
-p4 = subprocess.run(shlex.split(s="rm food-101.zip"))
+p1 = subprocess.Popen(shlex.split(s="kaggle datasets download -d dansbecker/food-101"))
+p1.wait()
+p2 = subprocess.Popen(shlex.split(s="unzip food-101.zip"))
+p2.wait()
+p3 = subprocess.Popen(shlex.split(s="rm food-101.zip"))
+p3.wait()
