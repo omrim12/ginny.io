@@ -17,13 +17,3 @@ FILTERS = 64
 
 # Edamam API variables
 TABLE_COLUMN_WIDTH = 10
-EDAMAM_API = {
-    'food': {
-        'id': '3b32a5a9',
-        'key': '6475aa8f96f37d9195f225b5cd009f5e'
-    },
-    'recipes': {
-        'id': '05623be7',
-        'key': '2a709f77459956e1d04330b98fcd90ee'
-    }
-}

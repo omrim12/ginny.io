@@ -14,6 +14,13 @@ __pycache__
 images
 *.zip
 
+# secrets file
+secrets.env
+
+# genie model
+genie_metadata.json
+genie_net.h5
+
 # client input images
 *.jpg
 *.jpeg

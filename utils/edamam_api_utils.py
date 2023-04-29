@@ -1,8 +1,8 @@
+import os
 import logging
 from prettytable import PrettyTable
 from py_edamam import Edamam
 from constants import (
-    EDAMAM_API,
     TABLE_COLUMN_WIDTH
 )
 from urllib3.exceptions import HTTPError
@@ -12,17 +12,25 @@ logging.basicConfig(level=logging.INFO)
 
 
 def edamam_api_recipes_client():
-    return Edamam(
-        recipes_appid=EDAMAM_API['recipes']['id'],
-        recipes_appkey=EDAMAM_API['recipes']['key'],
-    )
+    try:
+        return Edamam(
+            recipes_appid=os.environ['RECIPES_API_ID'],
+            recipes_appkey=os.environ['RECIPES_API_SECRET'],
+        )
+    except KeyError as key_err:
+        LOGGER.error(f"Recipes API credentials are missing: {key_err}")
+        raise
 
 
 def edamam_api_food_client():
-    return Edamam(
-        food_appid=EDAMAM_API['food']['id'],
-        food_appkey=EDAMAM_API['food']['key']
-    )
+    try:
+        return Edamam(
+            food_appid=os.environ['FOOD_API_ID'],
+            food_appkey=os.environ['FOOD_API_CREDENTIALS']
+        )
+    except KeyError as key_err:
+        LOGGER.error(f"Food API credentials are missing: {key_err}")
+        raise
 
 
 def parse_recipes_data(recipes_raw):

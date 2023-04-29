@@ -1,9 +1,12 @@
-## genie.io
+## genie.io - Local Development
 ![genie image](genie_logo.png)
 ### Pre-requisites:
-- download [food-101](https://www.kaggle.com/datasets/kmader/food41) images datasets to this path
+- Set `KAGGLE_USERNAME` and `KAGGLE_KEY` environment variables with your [Kaggle](https://www.kaggle.com/) credentials
+- Set `FOOD_API_ID`, `FOOD_API_SECRET`, `RECIPES_API_ID` and `RECIPES_API_SECRET`
+  environment variables with your [Edamam API](https://www.edamam.com/) credentials
+- Download [food-101](https://www.kaggle.com/datasets/kmader/food41) images datasets from kaggle using `mount_food_101.py` script
 ### Get started with genie running following commands:
-- create a virtualenv:
+- Create a virtualenv:
 ```bash
 python -m venv venv && source venv/bin/activate
 ```
