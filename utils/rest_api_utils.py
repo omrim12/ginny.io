@@ -26,7 +26,7 @@ class GenieModelResource(Resource):
         image_array = analyze_food_img(food_img=food_image, as_path=False)
         food_type = classify_client_input(image_array=image_array, cnn_model=self.genie_model)
 
-        # delete old food img from path TODO
+        # delete old food img from path
         os.remove(GENIE_FOOD_IMG)
 
         return food_type, 200

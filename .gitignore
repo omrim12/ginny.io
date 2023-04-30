@@ -1,6 +1,3 @@
-# pypi distribuitions
-dist
-
 # virtual environments
 venv*
 
