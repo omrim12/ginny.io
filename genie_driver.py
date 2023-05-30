@@ -31,9 +31,10 @@ def main(args):
     if os.path.exists(GENIE_NET_FNAME):
         if '--new-genie' in args:
             # Train a new CNN model
-            genie_model, loss, acc, food_types = cnn_train(
-                num_types=extract_num_types(args)
-            )
+            if '--gpu' in args:
+                genie_model, loss, acc, food_types = cnn_train(
+                    num_types=extract_num_types(args), mode='gpu'
+                )
             # Delete previous CNN model
             os.remove(GENIE_NET_FNAME)
 

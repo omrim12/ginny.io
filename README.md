@@ -15,7 +15,7 @@ python -m venv venv && source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-*Note: app requires python version>=3.10*
+*Note: app requires python version>=3.11*
 - run genie in CLI mode:
 ```bash
 python genie_driver.py --cli-mode
@@ -24,9 +24,13 @@ python genie_driver.py --cli-mode
 ```bash
 python genie_driver.py --api-mode
 ```
-- train a new genie CNN model with specific number of food types:
+- train a new genie CNN model with specific number of food types (default=101):
 ```bash
 python genie_driver.py --new-genie --num-types=<number of supported food types>
+```
+- train a new genie CNN model with GPU adaptation:
+```bash
+python genie_driver.py --new-genie --gpu
 ```
 
 ## Container Image

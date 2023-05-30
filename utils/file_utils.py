@@ -25,7 +25,7 @@ def save_genie(genie_model, loss, acc, food_types):
             'accuracy': acc,
             'loss': loss,
             'supported_food_types': food_types,
-            'date': date.today()
+            'date': str(date.today())
         }
         json.dump(net_metadata, net_meta_file)
 

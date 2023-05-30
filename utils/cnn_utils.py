@@ -1,5 +1,6 @@
 import logging
 import numpy as np
+import tensorflow as tf
 from keras import layers
 from termcolor import cprint
 from tensorflow import keras
@@ -89,7 +90,7 @@ def train_by_type(
     return model, test_loss, test_acc
 
 
-def cnn_train(num_types=None):
+def cnn_train(num_types=None, mode='cpu'):
     cprint('\nAbout to train a new genie!', "blue")
 
     # load train + valid + test datasets
@@ -101,6 +102,15 @@ def cnn_train(num_types=None):
         X_train, X_valid, X_test,\
             y_train, y_valid, y_test, \
             food_types = load_food_101()
+
+    # Adapting GPU/CPU usage
+    if mode == 'gpu':
+        if tf.test.gpu_device_name():
+            LOGGER.info(f"Found GPU device: {tf.test.gpu_device_name()}")
+            physical_devices = tf.config.experimental.list_physical_devices('GPU')
+            tf.config.experimental.set_memory_growth(physical_devices[0], True)
+        else:
+            LOGGER.info(f"No GPU device found. running with CPU")
 
     # Training CNN using the food 101 dataset
     LOGGER.info(f"--- Running CNN '{CONV_TYPE}' learning session ---")

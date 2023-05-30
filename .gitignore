@@ -12,7 +12,7 @@ images
 *.zip
 
 # genie model
-genie_metadata.json
+genie_res.json
 genie_net.h5
 
 # client input images
