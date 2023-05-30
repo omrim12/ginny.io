@@ -15,7 +15,7 @@ python -m venv venv && source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-*Note: app requires python version>=3.11*
+*Note: app requires python version>=3.11 (according to [vermin](https://github.com/netromdk/vermin))*
 - run genie in CLI mode:
 ```bash
 python genie_driver.py --cli-mode
